@@ -102,12 +102,14 @@ describe.skipIf(!(hasGh || required))(
       }
     );
 
+    // This aggregate starts a local CLI process per repository command.
+    // The complete check took 15.1s on WSL; keep every assertion mandatory.
     test("every command with a repository context accepts the repository override the tool relies on", () => {
       const withoutOverride = GH_COMMANDS.filter(
         (command) => !(command === "api" || command.startsWith("repo "))
       ).filter((command) => !/-R, --repo\b/.test(helpFor(command)));
       expect(withoutOverride).toEqual([]);
-    });
+    }, 30_000);
   }
 );
 
