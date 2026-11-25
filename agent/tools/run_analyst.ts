@@ -1,0 +1,42 @@
+import { defineWorkflowTool } from "eve/tools";
+import { z } from "zod";
+import { stationPolicy } from "../lib/github/approval.js";
+import { stationOutput } from "../lib/stations/result.js";
+import { ANALYST_OUTPUT_SCHEMA } from "../lib/stations/schemas.js";
+
+/**
+ * Blocking wrapper the orchestrator calls to run the `analyst` station.
+ *
+ * @remarks
+ * Attaches the output schema per call, and throws when the station fails,
+ * is cancelled, or returns no data (`stationOutput` in
+ * `agent/lib/stations/result.ts`), so the orchestrator sees a tool error
+ * instead of an empty result. Named `run_analyst`, not `analyst`:
+ * the compiler rejects a tool and a local subagent with the same public
+ * name.
+ */
+export default defineWorkflowTool({
+  approval: stationPolicy,
+  description:
+    "Analyze a classified work item against the real repository checkout and produce an " +
+    "implementation plan: problem statement, approach, ordered steps, affected files, " +
+    "risks, acceptance criteria, and test strategy. Planning only; writes no code. The " +
+    "caller passes the work item, its classification, and any research findings in the " +
+    "message, plus a research artifact id when the researcher saved a full memo. May " +
+    "save its own deep supporting detail as an analysis artifact and return the id.",
+  async execute({ message }, ctx) {
+    "use workflow";
+    const response = await ctx.agent("analyst").send(message, {
+      outputSchema: ANALYST_OUTPUT_SCHEMA,
+      signal: ctx.abortSignal,
+    });
+    return stationOutput("analyst", await response.result());
+  },
+  inputSchema: z.object({
+    message: z
+      .string()
+      .describe(
+        "Everything the station needs; it does not see your conversation history."
+      ),
+  }),
+});

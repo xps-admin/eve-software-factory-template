@@ -1,0 +1,43 @@
+{
+  "name": "eve-software-factory-template",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Foreman, the eve Software Factory.",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#*": "./agent/*",
+    "#evals/*": "./evals/*"
+  },
+  "scripts": {
+    "build": "eve build",
+    "check": "ultracite check",
+    "dev": "eve dev",
+    "discovery": "node scripts/check-discovery.ts",
+    "eval": "eve eval",
+    "fix": "ultracite fix",
+    "start": "eve start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc",
+    "validate": "pnpm run check && pnpm run typecheck && pnpm run test && pnpm run discovery"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.9.0",
+    "@vercel/connect": "^2.9.3",
+    "ai": "^7.0.173",
+    "eve": "1.2.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.14",
+    "@types/node": "~24.19.0",
+    "typescript": "7.0.2",
+    "ultracite": "^7.12.1",
+    "vitest": "^5.1.0"
+  },
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": "24.x"
+  }
+}

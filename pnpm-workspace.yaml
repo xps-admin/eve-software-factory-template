@@ -1,0 +1,10 @@
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - "@ai-sdk/*"
+  - "@vercel/*"
+  - "@workflow/*"
+  - ai
+  - eve
+  - workflow
+  - ultracite@7.12.1
