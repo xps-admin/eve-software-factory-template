@@ -1,0 +1,34 @@
+name: Work request
+description: Describe one bounded change with observable acceptance criteria.
+title: "[Work] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Creating this issue does not authorize factory execution. A maintainer reviews its scope and dependencies before explicitly handing it to the factory.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Requested outcome
+      description: Explain the current problem and the behavior that should result.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and constraints
+      description: Allowed areas, dependencies and actions that need separate approval.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Specific checks and evidence that would demonstrate completion.
+    validations:
+      required: true
+  - type: textarea
+    id: recovery
+    attributes:
+      label: Risk and recovery
+      description: Known risks, independent reviewer and rollback approach.
